@@ -1,9 +1,5 @@
 import React, { useState, useEffect, createContext } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import FavoritesView from "./Views/FavoritesView";
-import BookDetailsView from "./Views/BookDetailsView";
-// import Home from "./Views/Home";
 import Header from "./Components/Header";
 import "./App.css";
 
@@ -31,6 +27,8 @@ export default function App() {
         const response = await fetch(baseAPIurl);
         if (!response.ok) throw new Error("Failed to fetch books.");
         const data = await response.json();
+
+        console.log("Fetched books:", data);
 
         setBooks(data.results);
       } catch (err) {

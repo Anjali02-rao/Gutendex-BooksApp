@@ -4,8 +4,7 @@ import BookCard from "../Components/BookCard";
 import "../App.css";
 
 export default function HomeView() {
-  const { books, loading, error, favorites, handleFavoriteClick } =
-    useContext(AppContext);
+  const { books, loading, error, favorites } = useContext(AppContext);
 
   if (loading) return <p>Loading books...</p>;
   if (error) return <p>{error}</p>;

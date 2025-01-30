@@ -28,7 +28,9 @@ export default function BookDetailsView() {
       <div className="book-info">
         <p>
           <strong>Author:</strong>{" "}
-          {book.authors.map((author) => author.name).join(", ")}
+          {book.authors && book.authors.length > 0
+            ? book.authors.map((author) => author.name).join(", ")
+            : "Unknown Author"}
         </p>
         <p>
           <strong>Language:</strong> {book.languages?.join(", ") || "N/A"}

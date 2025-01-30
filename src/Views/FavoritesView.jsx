@@ -4,13 +4,13 @@ import BookCard from "../Components/BookCard";
 import "../App.css";
 
 export default function FavoritesView() {
-  const { favorites, removeFromFavorites } = useContext(AppContext);
+  const { books, favorites, removeFromFavorites } = useContext(AppContext);
 
   const favoriteBooks = books.filter((book) =>
     favorites.some((favBook) => favBook.id === book.id)
   );
 
-  const handleFavoriteClick = useCallback((bookId) => {
+  const handleFavorites = useCallback((bookId) => {
     favorites((prevFavorites) => {
       if (prevFavorites.includes(bookId)) {
         return prevFavorites.filter((id) => id !== bookId);

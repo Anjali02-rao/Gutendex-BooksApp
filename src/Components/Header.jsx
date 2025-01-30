@@ -3,7 +3,7 @@ import { AppContext } from "../App";
 import { Link } from "react-router-dom";
 
 export default function Header() {
-  const { Categories } = useContext(AppContext);
+  const { categories } = useContext(AppContext);
 
   return (
     <header className="main-header">

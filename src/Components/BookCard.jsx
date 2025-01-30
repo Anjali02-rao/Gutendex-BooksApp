@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 // import "./BookCard.css";
 
-export default function BookCard({ book, addToFavorites }) {
+export default function BookCard({ book }) {
   return (
     <div className="book-card">
       <Link to={`/book/${book.id}`}>

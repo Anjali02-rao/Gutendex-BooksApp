@@ -25,6 +25,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <RouterProvider router={router} basename="/Gutendex-BooksApp" />
   </StrictMode>
 );
+
+export default router;

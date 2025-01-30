@@ -6,7 +6,7 @@ import "./CategoriesView.css";
 import "../App.css";
 
 export default function CategoriesView() {
-  const { Category } = useParams() || {};
+  const { category } = useParams();
   const { addToFavorites } = useContext(AppContext);
   // const [favorites, setFavorites] = useState([]);
 
@@ -15,7 +15,7 @@ export default function CategoriesView() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!Category) {
+    if (!category) {
       setError("Category is missing.");
       setLoading(false);
       return;
@@ -26,7 +26,7 @@ export default function CategoriesView() {
         setLoading(true);
         setError(null);
 
-        const categoryQuery = encodeURIComponent(Category.toLowerCase());
+        const categoryQuery = encodeURIComponent(category.toLowerCase());
 
         const response = await fetch(
           `https://gutendex.com/books/?topic=${categoryQuery}`
@@ -50,7 +50,7 @@ export default function CategoriesView() {
     };
 
     fetchBooks();
-  }, [Category]);
+  }, [category]);
 
   if (loading) return <p>Loading books...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -62,7 +62,7 @@ export default function CategoriesView() {
           ? `${Category.charAt(0).toUpperCase() + Category.slice(1)} Books`
           : "Books"}
       </h2> */}
-      <h2>{Category ? `${Category} Books` : "Books"}</h2>
+      <h2>{category ? `${category} Books` : "Books"}</h2>
       <div className="books-container">
         {books.length > 0 ? (
           books.map((book) => (
