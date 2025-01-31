@@ -14,6 +14,14 @@ export default function BookDetailsView() {
 
   const isFavorite = favorites.some((favBook) => favBook.id === book.id);
 
+  const handleFavoriteToggle = () => {
+    if (isFavorite) {
+      removeFromFavorites(book.id);
+    } else {
+      addToFavorites(book);
+    }
+  };
+
   return (
     <div className="book-details-view">
       <h2 className="book-title">{book.title}</h2>
@@ -47,32 +55,19 @@ export default function BookDetailsView() {
         </p>
 
         {book.formats?.["text/html"] && (
-          <>
-            <div className="actions">
-              <a
-                href={book.formats["text/html"]}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Read Book
-              </a>
-              {isFavorite ? (
-                <button
-                  onClick={() => removeFromFavorites(book.id)}
-                  className="remove-from-favorites"
-                >
-                  Remove from Favorites
-                </button>
-              ) : (
-                <button
-                  onClick={() => addToFavorites(book)}
-                  className="add-to-favorites"
-                >
-                  Add to Favorites
-                </button>
-              )}
-            </div>
-          </>
+          <div className="actions">
+            <a
+              href={book.formats["text/html"]}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Read Book
+            </a>
+
+            <button onClick={handleFavoriteToggle} className="favorite-toggle">
+              {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+            </button>
+          </div>
         )}
       </div>
     </div>

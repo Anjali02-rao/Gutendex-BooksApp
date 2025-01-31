@@ -1,8 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-// import "./BookCard.css";
-
 export default function BookCard({ book }) {
   return (
     <div className="book-card">
@@ -25,7 +23,6 @@ export default function BookCard({ book }) {
             Subject: {book.subjects?.join(", ") || "N/A"}
           </p>
         </div>
-        {/* <button onClick={() => addToFavorites(book)}>Add to Favorites</button> */}
       </Link>
     </div>
   );

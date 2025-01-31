@@ -1,49 +1,57 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../App";
 import BookCard from "../Components/BookCard";
-import "../App.css";
 
 export default function FavoritesView() {
-  const { books, favorites, removeFromFavorites } = useContext(AppContext);
+  const { favorites, books, removeFromFavorites } = useContext(AppContext);
 
-  const favoriteBooks = books.filter((book) =>
-    favorites.some((favBook) => favBook.id === book.id)
-  );
+  // We use the localStorage data in case the user refreshes the page
+  useEffect(() => {
+    // Update favorites from localStorage on page load
+    const storedFavorites = JSON.parse(localStorage.getItem("favorites"));
+    if (storedFavorites) {
+      setFavorites(storedFavorites);
+    }
+  }, []);
 
-  const handleFavorites = useCallback((bookId) => {
-    favorites((prevFavorites) => {
-      if (prevFavorites.includes(bookId)) {
-        return prevFavorites.filter((id) => id !== bookId);
-      } else {
-        return [...prevFavorites, bookId];
-      }
-    });
-  });
+  // We need to track favorites as a local state as well
+  const [favoritesState, setFavorites] = useState(favorites);
+
+  // Whenever favorites change, update the state and sync with localStorage
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favoritesState));
+  }, [favoritesState]);
+
+  const handleRemove = (bookId) => {
+    removeFromFavorites(bookId); // Remove from global context
+    // Update the local state
+    const updatedFavorites = favoritesState.filter(
+      (book) => book.id !== bookId
+    );
+    setFavorites(updatedFavorites);
+    console.log("Current favorites:", favoritesState);
+  };
 
   return (
     <div className="favorites-view">
-      <h2>Favorites</h2>
-      {favoriteBooks.length === 0 ? (
-        <p>No favorite books yet stored.</p>
-      ) : (
-        <div className="book-container">
-          {favorites.map((book) => (
-            <div key={book.id} className="favorite-item">
+      <h2>Your Favorite Books</h2>
+      <div className="books-container">
+        {favoritesState.length === 0 ? (
+          <p>You have no favorite books yet.</p>
+        ) : (
+          books
+            .filter((book) =>
+              favoritesState.some((favBook) => favBook.id === book.id)
+            )
+            .map((book) => (
               <BookCard
+                key={book.id}
                 book={book}
-                bookImage={book.formats?.["image/jpeg"] || "/default-book.jpg"}
+                removeFromFavorites={() => handleRemove(book.id)}
               />
-
-              <button
-                className="remove-favorite"
-                onClick={() => removeFromFavorites(book.id)}
-              >
-                Remove from Favorites
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+            ))
+        )}
+      </div>
     </div>
   );
 }

@@ -19,29 +19,6 @@ export default function App() {
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const response = await fetch(baseAPIurl);
-        if (!response.ok) throw new Error("Failed to fetch books.");
-        const data = await response.json();
-
-        console.log("Fetched books:", data);
-
-        setBooks(data.results);
-      } catch (err) {
-        setError("Failed to load books.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
@@ -59,14 +36,40 @@ export default function App() {
   };
 
   const removeFromFavorites = (bookId) => {
+    console.log("Removing book:", bookId);
+
     setFavorites((prevFavorites) => {
       const updatedFavorites = prevFavorites.filter(
-        (favbook) => favbook.id !== bookId
+        (favBook) => favBook.id !== bookId
       );
       alert("Book removed from favorites");
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
       return updatedFavorites;
     });
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch(baseAPIurl);
+        if (!response.ok) throw new Error("Failed to fetch books.");
+        const data = await response.json();
+
+        // console.log("Fetched books:", data);
+
+        setBooks(data.results);
+      } catch (err) {
+        setError("Failed to load books.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <AppContext.Provider
