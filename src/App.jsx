@@ -72,12 +72,15 @@ export default function App() {
     <AppContext.Provider
       value={{
         books,
+        setBooks,
         categories,
         cart,
         setCart,
         favorites,
         addToFavorites,
         removeFromFavorites,
+        setLoading,
+        setError,
         loading,
         error,
       }}

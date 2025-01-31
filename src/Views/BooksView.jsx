@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AppContext } from "../App";
-import { Link } from "react-router-dom";
+import BookCard from "../Components/BookCard";
 import "../App.css";
 
 export default function HomeView() {
@@ -12,13 +12,16 @@ export default function HomeView() {
 
   return (
     <div>
-      <ul className="books-list">
+      <div className="books-container">
         {books.map((book) => (
-          <Link to={`/Gutendex-BooksApp/book/${book.id}`}>
-            <li key={book.id}>{book.title}</li>
-          </Link>
+          <BookCard
+            book={book}
+            key={book.id}
+            isFavorite={favorites.includes(book.id)}
+            onFavoriteClick={addToFavorites}
+          />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

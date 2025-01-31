@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 export default function BookCard({ book }) {
   return (
     <div className="book-card">
-      <Link to={`/book/${book.id}`}>
+      <Link to={`/Gutendex-BooksApp/book/${book.id}`}>
         <img
           src={book.formats["image/jpeg"] || "default-bookimg.jpg"}
           alt={book.title}

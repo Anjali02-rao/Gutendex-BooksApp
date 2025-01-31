@@ -10,9 +10,10 @@ export default function Header() {
       <div>
         <h1>Gutendex</h1>
         <nav>
-          <Link to="/">Home</Link>
-          <Link to="/Favorites">Favorites</Link>
-          <Link to="/category">Categories</Link>
+          <Link to="/Gutendex-BooksApp">Home</Link>
+          <Link to="/Gutendex-BooksApp/bookview">Books</Link>
+          <Link to="/Gutendex-BooksApp/Favorites">Favorites</Link>
+          <Link to="/Gutendex-BooksApp/category">Categories</Link>
         </nav>
       </div>
     </header>

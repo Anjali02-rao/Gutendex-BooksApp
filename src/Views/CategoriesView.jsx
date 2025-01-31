@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { AppContext } from "../App";
 import BookCard from "../Components/BookCard";
 import "./CategoriesView.css";
+import Categories from "../Components/Categories";
 import "../App.css";
 
 export default function CategoriesView() {
@@ -14,49 +15,50 @@ export default function CategoriesView() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (!category) {
-      setError("Category is missing.");
-      setLoading(false);
-      return;
-    }
+  // useEffect(() => {
+  //   if (!category) {
+  //     setError("Category is missing.");
+  //     setLoading(false);
+  //     return;
+  //   }
 
-    const fetchBooks = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  //   const fetchBooks = async () => {
+  //     try {
+  //       setLoading(true);
+  //       setError(null);
 
-        const categoryQuery = encodeURIComponent(category.toLowerCase());
+  //       const categoryQuery = encodeURIComponent(category.toLowerCase());
 
-        const response = await fetch(
-          `https://gutendex.com/books/?topic=${categoryQuery}`
-        );
+  //       const response = await fetch(
+  //         `https://gutendex.com/books/?topic=${categoryQuery}`
+  //       );
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch books for this category");
-        }
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch books for this category");
+  //       }
 
-        const data = await response.json();
-        if (data.results.length > 0) {
-          setBooks(data.results);
-        } else {
-          throw new Error("No results found for this category");
-        }
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       const data = await response.json();
+  //       if (data.results.length > 0) {
+  //         setBooks(data.results);
+  //       } else {
+  //         throw new Error("No results found for this category");
+  //       }
+  //     } catch (err) {
+  //       setError(err.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchBooks();
-  }, [category]);
+  //   fetchBooks();
+  // }, [category]);
 
-  if (loading) return <p>Loading books...</p>;
-  if (error) return <p>Error: {error}</p>;
+  // if (loading) return <p>Loading books...</p>;
+  // if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="categories-view">
+      <Categories />
       {/* <h2>
         {Category
           ? `${Category.charAt(0).toUpperCase() + Category.slice(1)} Books`
