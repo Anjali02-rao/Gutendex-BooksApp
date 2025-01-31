@@ -5,26 +5,22 @@ import BookCard from "../Components/BookCard";
 export default function FavoritesView() {
   const { favorites, books, removeFromFavorites } = useContext(AppContext);
 
-  // We use the localStorage data in case the user refreshes the page
   useEffect(() => {
-    // Update favorites from localStorage on page load
     const storedFavorites = JSON.parse(localStorage.getItem("favorites"));
     if (storedFavorites) {
       setFavorites(storedFavorites);
     }
   }, []);
 
-  // We need to track favorites as a local state as well
   const [favoritesState, setFavorites] = useState(favorites);
 
-  // Whenever favorites change, update the state and sync with localStorage
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favoritesState));
   }, [favoritesState]);
 
   const handleRemove = (bookId) => {
-    removeFromFavorites(bookId); // Remove from global context
-    // Update the local state
+    removeFromFavorites(bookId);
+
     const updatedFavorites = favoritesState.filter(
       (book) => book.id !== bookId
     );

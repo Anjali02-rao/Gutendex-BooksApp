@@ -15,7 +15,6 @@ export default function CategoriesView() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Assuming you want to fetch books based on category
     const fetchBooks = async () => {
       try {
         setLoading(true);
@@ -39,10 +38,8 @@ export default function CategoriesView() {
   return (
     <div className="categories-view">
       <Categories />
-      {/* Only show the category heading if books are available */}
       {books.length > 0 && <h2>{category ? `${category} Books` : "Books"}</h2>}
       <div className="books-container">
-        {/* Show books if available, otherwise show no books message */}
         {books.length > 0
           ? books.map((book) => (
               <BookCard
