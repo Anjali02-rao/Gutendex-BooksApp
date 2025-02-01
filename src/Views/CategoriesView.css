@@ -12,7 +12,7 @@
 }
 
 .categories {
-  background: #fff;
+  background: #c3c3c3;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -30,17 +30,16 @@
 }
 
 .categories li {
-  background: #ff9800;
+  background: #ff9900;
   color: #fff;
   padding: 10px 20px;
   border-radius: 20px;
-  font-size: 0.9rem;
+  font-size: 16px;
   cursor: pointer;
-  transition:
-      /* background 0.3s ease, */ transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .categories li:hover {
-  background: #e68900;
+  background: #d68100;
   transform: translateY(-2px);
 }
