@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../App";
 import "./BookDetailsView.css";
+import "../App.css";
 
 export default function BookDetailsView() {
   const { bookId } = useParams();

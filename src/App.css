@@ -19,7 +19,7 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 1.8rem;
+  font-size: 38px;
   margin-top: 10px;
 }
 
@@ -29,8 +29,8 @@ a {
 
 .main-header nav a {
   color: #fff;
-  margin-right: 20px;
-  font-size: 1rem;
+  margin-left: 20px;
+  font-size: 18px;
   transition: color 0.3s ease;
 }
 
@@ -40,24 +40,11 @@ a {
   text-underline-offset: 0.4rem;
 }
 
-/* h2 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-} */
-
-.books-container {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(200px, 1fr));
-  gap: 60px;
-  margin: 60px;
-}
-
 .book-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 15px;
+  padding: 10px;
   border-radius: 10px;
   background-color: #b7b7b7;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -73,33 +60,6 @@ a {
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
 }
 
-.book-card__image {
-  max-height: 250px;
-  width: auto;
-  margin-left: 66px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
-
-.book-card__details {
-  text-align: center;
-  font-size: 14px;
-}
-
-.book-card__title {
-  font-size: 16px;
-  font-weight: bold;
-  color: #303030;
-  margin: 10px 0;
-}
-
-.book-card__author,
-.book-card__language {
-  font-size: 14px;
-  color: #484848;
-  margin: 5px 0;
-}
-
 .books-list {
   font-size: 20px;
   color: gainsboro;
@@ -108,3 +68,44 @@ a {
 .books-list li:hover {
   color: #ffb951;
 }
+
+.favorites-view h2 {
+  text-align: center;
+}
+
+.favorites-view p {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.book-card__image {
+  max-height: 250px;
+  width: auto;
+  margin-left: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.book-card__details {
+  text-align: center;
+}
+
+.book-card__title {
+  margin: 10px 0;
+  padding: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #303030;
+}
+
+.book-card__author,
+.book-card__language {
+  color: #7a5252;
+  margin: 5px 0;
+}
+
+/* .book-card__subject {
+  font-size: 12px;
+} */

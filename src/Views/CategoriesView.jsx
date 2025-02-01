@@ -2,8 +2,8 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../App";
 import BookCard from "../Components/BookCard";
-import "./CategoriesView.css";
 import Categories from "../Components/Categories";
+import "./CategoriesView.css";
 import "../App.css";
 
 export default function CategoriesView() {
@@ -39,7 +39,7 @@ export default function CategoriesView() {
     <div className="categories-view">
       <Categories />
       {books.length > 0 && <h2>{category ? `${category} Books` : "Books"}</h2>}
-      <div className="books-container">
+      <div className="categories-books-container">
         {books.length > 0
           ? books.map((book) => (
               <BookCard

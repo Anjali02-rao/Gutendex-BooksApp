@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../App";
 import BookCard from "./BookCard";
 import { Link } from "react-router-dom";
+import "../App.css";
 
 export default function Categories() {
   const { books, setBooks, setLoading, setError, favorites, addToFavorites } =
