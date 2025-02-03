@@ -9,6 +9,7 @@ import BookDetailsView from "./Views/BookDetailsView.jsx";
 import ErrorView from "./Views/ErrorView";
 import CategoriesView from "./Views/CategoriesView.jsx";
 import FavoritesView from "./Views/FavoritesView";
+import SearchResultsView from "./Views/SearchResultsView";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
     errorElement: <ErrorView />,
     children: [
       { path: "Gutendex-BooksApp/", element: <HomeView /> },
+      {
+        path: "Gutendex-BooksApp/search-results",
+        element: <SearchResultsView />,
+      },
       { path: "Gutendex-BooksApp/bookview", element: <BooksView /> },
       { path: "Gutendex-BooksApp/book/:bookId", element: <BookDetailsView /> },
       {

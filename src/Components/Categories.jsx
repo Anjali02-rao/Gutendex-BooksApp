@@ -84,13 +84,13 @@ export default function Categories() {
         </ul>
       </nav>
 
-      <div className="books-container">
+      <div className="category-container">
         {selectedCategory && filteredBooks.length > 0 && (
           <h3>Books in {selectedCategory} category</h3>
         )}
 
         {filteredBooks.length === 0 && selectedCategory && (
-          <p>No books found for this category.</p>
+          <h3>No books found for this category.</h3>
         )}
 
         {filteredBooks.length > 0 &&

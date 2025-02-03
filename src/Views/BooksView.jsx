@@ -11,7 +11,8 @@ export default function HomeView() {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
+    <div className="books-view">
+      <h2>All Books</h2>
       <div className="books-container">
         {books.map((book) => (
           <BookCard

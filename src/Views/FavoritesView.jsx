@@ -4,7 +4,7 @@ import BookCard from "../Components/BookCard";
 import "../App.css";
 
 export default function FavoritesView() {
-  const { favorites, books, removeFromFavorites } = useContext(AppContext);
+  const { favorites, removeFromFavorites } = useContext(AppContext);
   const [favoritesState, setFavoritesState] = useState([]);
 
   useEffect(() => {

@@ -7,16 +7,15 @@ export const AppContext = createContext();
 
 export default function App() {
   const [books, setBooks] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [cart, setCart] = useState([]);
-  const baseAPIurl = "https://gutendex.com/books";
-
   const [favorites, setFavorites] = useState(() => {
     const storedFavorites = localStorage.getItem("favorites");
     return storedFavorites ? JSON.parse(storedFavorites) : [];
   });
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const baseAPIurl = "https://gutendex.com/books";
 
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
@@ -26,40 +25,29 @@ export default function App() {
     setFavorites((prevFavorites) => {
       if (!prevFavorites.some((favBook) => favBook.id === book.id)) {
         const updatedFavorites = [...prevFavorites, book];
-        alert(`${book.title} has been added to favorites!`);
         return updatedFavorites;
       } else {
-        alert(`${book.title} is already in favorites.`);
         return prevFavorites;
       }
     });
   };
 
   const removeFromFavorites = (bookId) => {
-    console.log("Removing book:", bookId);
-
     setFavorites((prevFavorites) => {
       const updatedFavorites = prevFavorites.filter(
         (favBook) => favBook.id !== bookId
       );
-      alert("Book removed from favorites");
+
       localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
       return updatedFavorites;
     });
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchBooks = async () => {
       try {
-        setLoading(true);
-        setError(null);
-
         const response = await fetch(baseAPIurl);
-        if (!response.ok) throw new Error("Failed to fetch books.");
         const data = await response.json();
-
-        // console.log("Fetched books:", data);
-
         setBooks(data.results);
       } catch (err) {
         setError("Failed to load books.");
@@ -68,7 +56,7 @@ export default function App() {
       }
     };
 
-    fetchData();
+    fetchBooks();
   }, []);
 
   return (
@@ -76,16 +64,15 @@ export default function App() {
       value={{
         books,
         setBooks,
-        categories,
-        cart,
-        setCart,
         favorites,
         addToFavorites,
         removeFromFavorites,
-        setLoading,
-        setError,
         loading,
+        setLoading,
         error,
+        setError,
+        searchResults,
+        setSearchResults,
       }}
     >
       <div>
