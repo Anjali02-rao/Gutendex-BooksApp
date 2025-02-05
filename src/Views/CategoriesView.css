@@ -1,4 +1,8 @@
 .categories-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
@@ -9,6 +13,12 @@
   text-align: center;
   margin-bottom: 20px;
   color: #333;
+}
+
+.categories-books-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 100px;
 }
 
 .categories {
@@ -40,7 +50,7 @@
 }
 
 .categories li:hover {
-  background: #d68100;
+  background: #d66700;
   transform: translateY(-2px);
 }
 
@@ -49,6 +59,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  min-width: 200px;
+  gap: 30px;
 }
 
 .category-container h3 {
