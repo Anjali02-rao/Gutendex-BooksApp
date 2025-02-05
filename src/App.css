@@ -162,3 +162,84 @@ p {
 .search-form button:hover {
   background-color: #0056b3;
 }
+
+.paginering {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.paginering button {
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.paginering button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.paginering button:hover:not(:disabled) {
+  background-color: #45a049;
+}
+
+.results,
+.search-query {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 200px;
+  gap: 30px;
+}
+
+.pagination,
+.categories-pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+  padding: 10px;
+  width: 100%;
+}
+
+.previous-btn,
+.next-btn,
+.cat-pg-btn-p,
+.cat-pg-btn-n {
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.previous-btn:hover,
+.next-btn:hover,
+.cat-pg-btn-p:hover,
+.cat-pg-btn-n:hover {
+  background-color: #45a049;
+}
+
+.previous-btn:disabled,
+.next-btn:disabled,
+.cat-pg-btn-p:disabled,
+.cat-pg-btn-n:disabled {
+  background-color: #d3d3d3;
+  color: #303030;
+  cursor: not-allowed;
+}
+.pagination span,
+.categories-pagination span {
+  padding: 10px;
+}

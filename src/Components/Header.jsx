@@ -1,11 +1,9 @@
 import { useState, useContext, useEffect } from "react";
 import { AppContext } from "../App";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
-import { useNavigate } from "react-router-dom";
 
 export default function Header() {
-  const { setSearchResults } = useContext(AppContext);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -21,15 +19,11 @@ export default function Header() {
     e.preventDefault();
     if (searchQuery.trim() !== "") {
       try {
-        const response = await fetch(
-          `https://gutendex.com/books?search=${encodeURIComponent(searchQuery)}`
+        navigate(
+          `/Gutendex-BooksApp/search-results?query=${encodeURIComponent(searchQuery)}`
         );
-        const data = await response.json();
-        setSearchResults(data.results);
-
-        navigate("/Gutendex-BooksApp/search-results");
       } catch (error) {
-        console.error("Error fetching search results:", error);
+        console.error("Error navigating to search results:", error);
       }
     }
   };

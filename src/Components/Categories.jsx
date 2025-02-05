@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../App";
-import BookCard from "./BookCard";
 import { Link } from "react-router-dom";
+import BookCard from "./BookCard";
 import "../App.css";
 
 export default function Categories() {
@@ -10,6 +10,8 @@ export default function Categories() {
 
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [filteredBooks, setFilteredBooks] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const categories = [
     "Fiction",
@@ -36,32 +38,48 @@ export default function Categories() {
       )
     );
     setFilteredBooks(filtered);
+    setTotalPages(Math.ceil(filtered.length / 10));
   }, [selectedCategory, books]);
 
-  const fetchBooks = async () => {
-    setLoading(true);
-    setError(null);
+  useEffect(() => {
+    const fetchBooks = async () => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      const response = await fetch("https://gutendex.com/books/");
-      if (!response.ok) {
-        throw new Error("Error fetching books");
+      try {
+        const response = await fetch("https://gutendex.com/books/");
+        if (!response.ok) {
+          throw new Error("Error fetching books");
+        }
+
+        const data = await response.json();
+        setBooks(data.results);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
+    };
 
-      const data = await response.json();
-      console.log("Fetched data:", data);
+    fetchBooks();
+  }, []);
 
-      setBooks(data.results);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
     }
   };
 
-  useEffect(() => {
-    fetchBooks();
-  }, []);
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const currentBooks = filteredBooks.slice(
+    (currentPage - 1) * 10,
+    currentPage * 10
+  );
 
   return (
     <div className="categories-container">
@@ -93,8 +111,8 @@ export default function Categories() {
           <h3>No books found for this category.</h3>
         )}
 
-        {filteredBooks.length > 0 &&
-          filteredBooks.map((book) => (
+        {currentBooks.length > 0 &&
+          currentBooks.map((book) => (
             <BookCard
               book={book}
               key={book.id}
@@ -103,6 +121,28 @@ export default function Categories() {
             />
           ))}
       </div>
+
+      {filteredBooks.length > 0 && (
+        <div className="categories-pagination">
+          <button
+            onClick={handlePrevious}
+            disabled={currentPage === 1}
+            className="cat-pg-btn-p"
+          >
+            Previous
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={handleNext}
+            disabled={currentPage === totalPages}
+            className="cat-pg-btn-n"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }
