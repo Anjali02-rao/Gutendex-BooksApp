@@ -238,9 +238,7 @@ p {
 .cat-pg-btn-p:hover,
 .cat-pg-btn-n:hover,
 .author-pg-btn-p:hover,
-.author-pg-btn-n:hover,
-.test_previous:hover,
-.test_next:hover {
+.author-pg-btn-n:hover {
   background-color: #45a049;
 }
 
@@ -249,9 +247,7 @@ p {
 .cat-pg-btn-p:disabled,
 .cat-pg-btn-n:disabled,
 .author-pg-btn-n :disabled,
-.author-pg-btn-n :disabled,
-.test_previous:disabled,
-.test_ntest_next:disabled {
+.author-pg-btn-n :disabled {
   background-color: #d3d3d3;
   color: #303030;
   cursor: not-allowed;

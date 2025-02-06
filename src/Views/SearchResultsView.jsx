@@ -9,25 +9,31 @@ const SearchResultsView = () => {
   const [totalPages, setTotalPages] = useState(1);
   const { search } = useLocation();
   const searchQuery = new URLSearchParams(search).get("query") || "";
+  const searchType = new URLSearchParams(search).get("type") || "title";
 
   useEffect(() => {
     const fetchResults = async () => {
       try {
+        const baseUrl = "https://gutendex.com/books?";
+        const searchParam =
+          searchType === "author"
+            ? `author=${encodeURIComponent(searchQuery)}`
+            : `search=${encodeURIComponent(searchQuery)}`;
+
         const response = await fetch(
-          `https://gutendex.com/books?search=${encodeURIComponent(searchQuery)}&page=${currentPage}`
+          `${baseUrl}${searchParam}&page=${currentPage}`
         );
         const data = await response.json();
 
-        const totalBooks = data.total || data.results.length * totalPages;
         setResults(data.results);
-        setTotalPages(Math.ceil(data.totalBooks / 10));
+        setTotalPages(Math.ceil(data.count / 10));
       } catch (error) {
         console.error("Error fetching search results:", error);
       }
     };
 
     fetchResults();
-  }, [searchQuery, currentPage]);
+  }, [searchQuery, searchType, currentPage]);
 
   const handleNext = () => {
     if (currentPage < totalPages) {
@@ -41,42 +47,46 @@ const SearchResultsView = () => {
     }
   };
 
-  const booksPerPage = 10;
-  const displayedBooks = results.slice(
-    (currentPage - 1) * booksPerPage,
-    currentPage * booksPerPage
-  );
+  // const booksPerPage = 10;
+  // const displayedBooks = results.slice(
+  //   (currentPage - 1) * booksPerPage,
+  //   currentPage * booksPerPage
+  // );
 
   return (
     <div>
-      <h2 className="search-query">Search Results for "{searchQuery}"</h2>
+      <h2 className="search-query">
+        Search Results for "{searchQuery}" ({searchType})
+      </h2>
       <div className="results">
-        {displayedBooks.length > 0 ? (
-          displayedBooks.map((book) => <BookCard key={book.id} book={book} />)
+        {results.length > 0 ? (
+          results.map((book) => <BookCard key={book.id} book={book} />)
         ) : (
           <p>No results found.</p>
         )}
       </div>
 
-      <div className="pagination">
-        <button
-          onClick={handlePrevious}
-          disabled={currentPage === 1}
-          className="test_previous"
-        >
-          Previous
-        </button>
-        <span>
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          onClick={handleNext}
-          disabled={currentPage === totalPages}
-          className="test_next"
-        >
-          Next
-        </button>
-      </div>
+      {results.length > 10 && totalPages > 1 && (
+        <div className="pagination">
+          <button
+            onClick={handlePrevious}
+            disabled={currentPage === 1}
+            className="author-pg-btn-p"
+          >
+            Previous
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={handleNext}
+            disabled={currentPage === totalPages}
+            className="author-pg-btn-n"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };
