@@ -5,7 +5,7 @@ import BookCard from "./BookCard";
 import "../App.css";
 
 export default function Categories() {
-  const { books, setBooks, setLoading, setError, favorites, addToFavorites } =
+  const { setLoading, setError, favorites, addToFavorites } =
     useContext(AppContext);
 
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -32,28 +32,20 @@ export default function Categories() {
   useEffect(() => {
     if (!selectedCategory) return;
 
-    const filtered = books.filter((book) =>
-      book.subjects?.some((subject) =>
-        subject.toLowerCase().includes(selectedCategory.toLowerCase())
-      )
-    );
-    setFilteredBooks(filtered);
-    setTotalPages(Math.ceil(filtered.length / 10));
-  }, [selectedCategory, books]);
-
-  useEffect(() => {
-    const fetchBooks = async () => {
+    const fetchBooksByCategory = async () => {
       setLoading(true);
       setError(null);
-
       try {
-        const response = await fetch("https://gutendex.com/books/");
+        const response = await fetch(
+          `https://gutendex.com/books/?topic=${selectedCategory}`
+        );
         if (!response.ok) {
           throw new Error("Error fetching books");
         }
 
         const data = await response.json();
-        setBooks(data.results);
+        setFilteredBooks(data.results);
+        setTotalPages(Math.ceil(data.results.length / 10));
       } catch (err) {
         setError(err.message);
       } finally {
@@ -61,8 +53,8 @@ export default function Categories() {
       }
     };
 
-    fetchBooks();
-  }, []);
+    fetchBooksByCategory();
+  }, [selectedCategory]);
 
   const handleNext = () => {
     if (currentPage < totalPages) {
@@ -90,7 +82,10 @@ export default function Categories() {
             <li key={category}>
               <Link
                 to="#"
-                onClick={() => setSelectedCategory(category.toLowerCase())}
+                onClick={() => {
+                  setSelectedCategory(category.toLowerCase());
+                  setCurrentPage(1); // Reset pagination
+                }}
                 className={
                   selectedCategory === category.toLowerCase() ? "active" : ""
                 }
@@ -111,7 +106,7 @@ export default function Categories() {
           <h3>No books found for this category.</h3>
         )}
 
-        {currentBooks.length > 0 &&
+        {filteredBooks.length > 0 &&
           currentBooks.map((book) => (
             <BookCard
               book={book}
@@ -122,7 +117,7 @@ export default function Categories() {
           ))}
       </div>
 
-      {filteredBooks.length > 0 && (
+      {filteredBooks.length > 0 && totalPages > 1 && (
         <div className="categories-pagination">
           <button
             onClick={handlePrevious}
