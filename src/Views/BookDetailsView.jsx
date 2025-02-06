@@ -14,14 +14,12 @@ export default function BookDetailsView() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Check if the book is already in the context
     const foundBook = books.find((b) => b.id === Number(bookId));
 
     if (foundBook) {
       setBook(foundBook);
       setLoading(false);
     } else {
-      // Fetch the book details from the API if not found
       const fetchBookDetails = async () => {
         setLoading(true);
         setError(null);

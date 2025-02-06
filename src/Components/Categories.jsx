@@ -12,6 +12,7 @@ export default function Categories() {
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoadingState] = useState(false);
 
   const categories = [
     "Fiction",
@@ -33,7 +34,7 @@ export default function Categories() {
     if (!selectedCategory) return;
 
     const fetchBooksByCategory = async () => {
-      setLoading(true);
+      setLoadingState(true);
       setError(null);
       try {
         const response = await fetch(
@@ -49,7 +50,7 @@ export default function Categories() {
       } catch (err) {
         setError(err.message);
       } finally {
-        setLoading(false);
+        setLoadingState(false);
       }
     };
 
@@ -84,7 +85,7 @@ export default function Categories() {
                 to="#"
                 onClick={() => {
                   setSelectedCategory(category.toLowerCase());
-                  setCurrentPage(1); // Reset pagination
+                  setCurrentPage(1);
                 }}
                 className={
                   selectedCategory === category.toLowerCase() ? "active" : ""
@@ -98,23 +99,31 @@ export default function Categories() {
       </nav>
 
       <div className="category-container">
-        {selectedCategory && filteredBooks.length > 0 && (
-          <h3>Books in {selectedCategory} category</h3>
+        {selectedCategory && (
+          <>
+            {loading ? (
+              <h3>Loading books...</h3>
+            ) : (
+              <>
+                {filteredBooks.length > 0 ? (
+                  <>
+                    <h3>Books in {selectedCategory} category</h3>
+                    {currentBooks.map((book) => (
+                      <BookCard
+                        book={book}
+                        key={book.id}
+                        isFavorite={favorites.includes(book.id)}
+                        onFavoriteClick={addToFavorites}
+                      />
+                    ))}
+                  </>
+                ) : (
+                  <h3>No books found for this category.</h3>
+                )}
+              </>
+            )}
+          </>
         )}
-
-        {filteredBooks.length === 0 && selectedCategory && (
-          <h3>No books found for this category.</h3>
-        )}
-
-        {filteredBooks.length > 0 &&
-          currentBooks.map((book) => (
-            <BookCard
-              book={book}
-              key={book.id}
-              isFavorite={favorites.includes(book.id)}
-              onFavoriteClick={addToFavorites}
-            />
-          ))}
       </div>
 
       {filteredBooks.length > 0 && totalPages > 1 && (
