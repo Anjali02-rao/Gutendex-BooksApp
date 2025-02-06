@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../App";
 import "./BookDetailsView.css";
@@ -9,8 +9,47 @@ export default function BookDetailsView() {
   const { books, favorites, addToFavorites, removeFromFavorites } =
     useContext(AppContext);
 
-  const book = books.find((b) => b.id === Number(bookId));
+  const [book, setBook] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    // Check if the book is already in the context
+    const foundBook = books.find((b) => b.id === Number(bookId));
+
+    if (foundBook) {
+      setBook(foundBook);
+      setLoading(false);
+    } else {
+      // Fetch the book details from the API if not found
+      const fetchBookDetails = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+          const response = await fetch(
+            `https://gutendex.com/books/?ids=${bookId}`
+          );
+          if (!response.ok) {
+            throw new Error("Book not found");
+          }
+          const data = await response.json();
+          if (data.results.length > 0) {
+            setBook(data.results[0]);
+          } else {
+            setError("Book not found.");
+          }
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchBookDetails();
+    }
+  }, [bookId, books]);
+
+  if (loading) return <p>Loading book details...</p>;
+  if (error) return <p>{error}</p>;
   if (!book) return <p>Book not found.</p>;
 
   const isFavorite = favorites.some((favBook) => favBook.id === book.id);
