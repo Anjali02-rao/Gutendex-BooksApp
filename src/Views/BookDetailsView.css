@@ -1,6 +1,7 @@
-body {
+/* body {
   background-color: #6d6d6d;
-}
+} */
+
 .book-details-view {
   display: flex;
   flex-direction: column;

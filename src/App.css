@@ -2,6 +2,7 @@ body {
   font-family: "Arial", sans-serif;
   margin: 0;
   padding: 0;
+  background-color: #6d6d6d;
 }
 
 a {
@@ -200,8 +201,7 @@ p {
 }
 
 .pagination,
-.categories-pagination,
-.author-search-pgn {
+.categories-pagination {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -217,9 +217,7 @@ p {
 .cat-pg-btn-p,
 .cat-pg-btn-n,
 .author-pg-btn-p,
-.author-pg-btn-n,
-.test_p,
-.test_n {
+.author-pg-btn-n {
   margin-bottom: 10px;
   padding: 10px 20px;
   background-color: #4caf50;
@@ -228,6 +226,7 @@ p {
   border-radius: 5px;
   font-size: 16px;
   text-align: center;
+  justify-content: center;
   cursor: pointer;
   display: inline-block;
   text-decoration: none;

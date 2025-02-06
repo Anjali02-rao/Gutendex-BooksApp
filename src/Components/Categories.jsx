@@ -39,13 +39,15 @@ export default function Categories() {
       setError(null);
       try {
         const response = await fetch(
-          `https://gutendex.com/books/?topic=${selectedCategory}&page=${currentPage}`
+          `https://gutendex.com/books/?topic=${selectedCategory}&page=${currentPage}&limit=10`
         );
         if (!response.ok) {
           throw new Error("Error fetching books");
         }
 
         const data = await response.json();
+        console.log("Fetched data:", data);
+
         setFilteredBooks(data.results);
         setTotalPages(Math.ceil(data.count / 10));
       } catch (err) {
@@ -70,12 +72,6 @@ export default function Categories() {
     }
   };
 
-  const booksPerPage = 10;
-  const currentBooks = filteredBooks.slice(
-    (currentPage - 1) * 10,
-    currentPage * 10
-  );
-
   const handleCategoryChange = (category) => {
     setSelectedCategory(category.toLowerCase());
     setCurrentPage(1);
@@ -91,10 +87,7 @@ export default function Categories() {
             <li key={category}>
               <Link
                 to="#"
-                onClick={() => {
-                  setSelectedCategory(category.toLowerCase());
-                  setCurrentPage(1);
-                }}
+                onClick={() => handleCategoryChange(category)}
                 className={
                   selectedCategory === category.toLowerCase() ? "active" : ""
                 }
@@ -116,7 +109,7 @@ export default function Categories() {
                 {filteredBooks.length > 0 ? (
                   <>
                     <h3>Books in {selectedCategory} category</h3>
-                    {currentBooks.map((book) => (
+                    {filteredBooks.map((book) => (
                       <BookCard
                         book={book}
                         key={book.id}
