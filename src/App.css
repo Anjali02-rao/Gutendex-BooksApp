@@ -46,9 +46,9 @@ a {
 .book-card {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
-  height: 420px;
+  /* height: 500px; */
   width: 300px;
   padding: 10px;
   border-radius: 10px;
@@ -200,10 +200,14 @@ p {
 }
 
 .pagination,
-.categories-pagination {
+.categories-pagination,
+.author-search-pgn {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 20px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  /* margin-bottom: 20px; */
   padding: 10px;
   width: 100%;
 }
@@ -211,7 +215,11 @@ p {
 .previous-btn,
 .next-btn,
 .cat-pg-btn-p,
-.cat-pg-btn-n {
+.cat-pg-btn-n,
+.author-pg-btn-p,
+.author-pg-btn-n,
+.test_p,
+.test_n {
   margin-bottom: 10px;
   padding: 10px 20px;
   background-color: #4caf50;
@@ -228,19 +236,28 @@ p {
 .previous-btn:hover,
 .next-btn:hover,
 .cat-pg-btn-p:hover,
-.cat-pg-btn-n:hover {
+.cat-pg-btn-n:hover,
+.author-pg-btn-p:hover,
+.author-pg-btn-n:hover,
+.test_previous:hover,
+.test_next:hover {
   background-color: #45a049;
 }
 
 .previous-btn:disabled,
 .next-btn:disabled,
 .cat-pg-btn-p:disabled,
-.cat-pg-btn-n:disabled {
+.cat-pg-btn-n:disabled,
+.author-pg-btn-n :disabled,
+.author-pg-btn-n :disabled,
+.test_previous:disabled,
+.test_ntest_next:disabled {
   background-color: #d3d3d3;
   color: #303030;
   cursor: not-allowed;
 }
 .pagination span,
-.categories-pagination span {
+.categories-pagination span,
+.author-search-pgn span {
   padding: 10px;
 }

@@ -10,6 +10,7 @@ export default function Categories() {
 
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [filteredBooks, setFilteredBooks] = useState([]);
+  const [authorSearch, setAuthorSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoadingState] = useState(false);
@@ -57,6 +58,33 @@ export default function Categories() {
     fetchBooksByCategory();
   }, [selectedCategory]);
 
+  useEffect(() => {
+    if (!authorSearch) return;
+
+    const fetchBooksByAuthor = async () => {
+      setLoadingState(true);
+      setError(null);
+      try {
+        const response = await fetch(
+          `https://gutendex.com/books/?author=${authorSearch}`
+        );
+        if (!response.ok) {
+          throw new Error("Error fetching books by author");
+        }
+
+        const data = await response.json();
+        setFilteredBooks(data.results);
+        setTotalPages(Math.ceil(data.results.length / 10));
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoadingState(false);
+      }
+    };
+
+    fetchBooksByAuthor();
+  }, [authorSearch]);
+
   const handleNext = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -98,6 +126,8 @@ export default function Categories() {
         </ul>
       </nav>
 
+      <div className="author-search-container"></div>
+
       <div className="category-container">
         {selectedCategory && (
           <>
@@ -126,27 +156,53 @@ export default function Categories() {
         )}
       </div>
 
-      {filteredBooks.length > 0 && totalPages > 1 && (
-        <div className="categories-pagination">
-          <button
-            onClick={handlePrevious}
-            disabled={currentPage === 1}
-            className="cat-pg-btn-p"
-          >
-            Previous
-          </button>
-          <span>
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            onClick={handleNext}
-            disabled={currentPage === totalPages}
-            className="cat-pg-btn-n"
-          >
-            Next
-          </button>
-        </div>
-      )}
+      {filteredBooks.length > 0 &&
+        totalPages > 1 &&
+        filteredBooks.length > 10 && (
+          <div className="categories-pagination">
+            <button
+              onClick={handlePrevious}
+              disabled={currentPage === 1}
+              className="cat-pg-btn-p"
+            >
+              Previous
+            </button>
+            <span>
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={handleNext}
+              disabled={currentPage === totalPages}
+              className="cat-pg-btn-n"
+            >
+              Next
+            </button>
+          </div>
+        )}
+
+      {filteredBooks.length > 0 &&
+        totalPages > 1 &&
+        filteredBooks.length > 10 && (
+          <div className="author-search-pgn">
+            <button
+              onClick={handlePrevious}
+              disabled={currentPage === 1}
+              className="author-pg-btn-p"
+            >
+              Previous
+            </button>
+            <span>
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={handleNext}
+              disabled={currentPage === totalPages}
+              className="author-pg-btn-n"
+            >
+              Next
+            </button>
+          </div>
+        )}
     </div>
   );
 }

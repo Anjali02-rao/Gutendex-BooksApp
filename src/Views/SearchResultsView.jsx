@@ -59,13 +59,21 @@ const SearchResultsView = () => {
       </div>
 
       <div className="pagination">
-        <button onClick={handlePrevious} disabled={currentPage === 1}>
+        <button
+          onClick={handlePrevious}
+          disabled={currentPage === 1}
+          className="test_previous"
+        >
           Previous
         </button>
         <span>
           Page {currentPage} of {totalPages}
         </span>
-        <button onClick={handleNext} disabled={currentPage === totalPages}>
+        <button
+          onClick={handleNext}
+          disabled={currentPage === totalPages}
+          className="test_next"
+        >
           Next
         </button>
       </div>
