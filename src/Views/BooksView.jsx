@@ -8,27 +8,13 @@ export default function BookView() {
     useContext(AppContext);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [booksPerPage, setBooksPerPage] = useState(10);
-  const [paginatedBooks, setPaginatedBooks] = useState([]);
+  const booksPerPage = 10;
 
   const totalPages = Math.ceil(books.length / booksPerPage);
-
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * booksPerPage;
-    const endIndex = startIndex + booksPerPage;
-    setPaginatedBooks(books.slice(startIndex, endIndex));
-  }, [currentPage, books]);
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-    }
-  };
+  const paginatedBooks = books.slice(
+    (currentPage - 1) * booksPerPage,
+    currentPage * booksPerPage
+  );
 
   if (loading) return <p>Loading books...</p>;
   if (error) return <p>{error}</p>;
@@ -47,25 +33,27 @@ export default function BookView() {
         ))}
       </div>
 
-      <div className="pagination">
-        <button
-          onClick={handlePrevious}
-          disabled={currentPage === 1}
-          className="previous-btn"
-        >
-          Previous
-        </button>
-        <span>
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          onClick={handleNext}
-          disabled={currentPage === totalPages}
-          className="next-btn"
-        >
-          Next
-        </button>
-      </div>
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="previous-btn"
+          >
+            Previous
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="next-btn"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }

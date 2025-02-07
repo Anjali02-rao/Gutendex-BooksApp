@@ -21,12 +21,12 @@ const SearchResultsView = () => {
             : `search=${encodeURIComponent(searchQuery)}`;
 
         const response = await fetch(
-          `${baseUrl}${searchParam}&page=${currentPage}`
+          `https://gutendex.com/books/?${searchType}=${encodeURIComponent(searchQuery)}&page=${currentPage}`
         );
         const data = await response.json();
 
-        setResults(data.results);
-        setTotalPages(Math.ceil(data.count / 10));
+        setResults(data.results || []);
+        setTotalPages(Math.ceil(data.count || 0 / 10));
       } catch (error) {
         console.error("Error fetching search results:", error);
       }
@@ -47,11 +47,11 @@ const SearchResultsView = () => {
     }
   };
 
-  // const booksPerPage = 10;
-  // const displayedBooks = results.slice(
-  //   (currentPage - 1) * booksPerPage,
-  //   currentPage * booksPerPage
-  // );
+  const booksPerPage = 10;
+  const displayedBooks = results.slice(
+    (currentPage - 1) * booksPerPage,
+    currentPage * booksPerPage
+  );
 
   return (
     <div>
@@ -62,7 +62,7 @@ const SearchResultsView = () => {
         {results.length > 0 ? (
           results.map((book) => <BookCard key={book.id} book={book} />)
         ) : (
-          <p>No results found.</p>
+          <p>Loading books...</p>
         )}
       </div>
 

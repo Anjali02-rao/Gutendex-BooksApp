@@ -35,7 +35,7 @@ export default function Categories() {
     if (!selectedCategory) return;
 
     const fetchBooksByCategory = async () => {
-      setLoadingState(true);
+      setLoading(true);
       setError(null);
       try {
         const response = await fetch(
@@ -48,12 +48,12 @@ export default function Categories() {
         const data = await response.json();
         console.log("Fetched data:", data);
 
-        setFilteredBooks(data.results);
-        setTotalPages(Math.ceil(data.count / 10));
+        setFilteredBooks(data.results || []);
+        setTotalPages(Math.ceil((data.count || 0) / 10));
       } catch (err) {
         setError(err.message);
       } finally {
-        setLoadingState(false);
+        setLoading(false);
       }
     };
 
@@ -100,34 +100,22 @@ export default function Categories() {
       </nav>
 
       <div className="category-container">
-        {selectedCategory && (
+        {selectedCategory && !loading && filteredBooks.length > 0 && (
           <>
-            {loading ? (
-              <h3>Loading books...</h3>
-            ) : (
-              <>
-                {filteredBooks.length > 0 ? (
-                  <>
-                    <h3>Books in {selectedCategory} category</h3>
-                    {filteredBooks.map((book) => (
-                      <BookCard
-                        book={book}
-                        key={book.id}
-                        isFavorite={favorites.includes(book.id)}
-                        onFavoriteClick={addToFavorites}
-                      />
-                    ))}
-                  </>
-                ) : (
-                  <h3>No books found for this category.</h3>
-                )}
-              </>
-            )}
+            <h3>Books in {selectedCategory} category</h3>
+            {filteredBooks.map((book) => (
+              <BookCard
+                book={book}
+                key={book.id}
+                isFavorite={favorites.includes(book.id)}
+                onFavoriteClick={addToFavorites}
+              />
+            ))}
           </>
         )}
       </div>
 
-      {filteredBooks.length > 0 && totalPages > 1 && (
+      {totalPages > 1 && (
         <div className="categories-pagination">
           <button
             onClick={handlePrevious}
