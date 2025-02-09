@@ -8,27 +8,27 @@ const SearchResultsView = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const { search } = useLocation();
+  const [loading, setLoading] = useState(false);
+
   const searchQuery = new URLSearchParams(search).get("query") || "";
   const searchType = new URLSearchParams(search).get("type") || "title";
 
   useEffect(() => {
     const fetchResults = async () => {
+      setLoading(true);
       try {
-        const baseUrl = "https://gutendex.com/books?";
-        const searchParam =
-          searchType === "author"
-            ? `author=${encodeURIComponent(searchQuery)}`
-            : `search=${encodeURIComponent(searchQuery)}`;
-
+        const apiParam = searchType === "author" ? "author" : "search";
         const response = await fetch(
-          `https://gutendex.com/books/?${searchType}=${encodeURIComponent(searchQuery)}&page=${currentPage}`
+          `https://gutendex.com/books/?${apiParam}=${encodeURIComponent(searchQuery)}&page=${currentPage}`
         );
         const data = await response.json();
 
         setResults(data.results || []);
-        setTotalPages(Math.ceil(data.count || 0 / 10));
+        setTotalPages(Math.ceil((data.count || 0) / 10));
       } catch (error) {
         console.error("Error fetching search results:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -47,11 +47,11 @@ const SearchResultsView = () => {
     }
   };
 
-  const booksPerPage = 10;
-  const displayedBooks = results.slice(
-    (currentPage - 1) * booksPerPage,
-    currentPage * booksPerPage
-  );
+  // const booksPerPage = 10;
+  // const displayedBooks = results.slice(
+  //   (currentPage - 1) * booksPerPage,
+  //   currentPage * booksPerPage
+  // );
 
   return (
     <div>
@@ -59,10 +59,12 @@ const SearchResultsView = () => {
         Search Results for "{searchQuery}" ({searchType})
       </h2>
       <div className="results">
-        {results.length > 0 ? (
+        {loading ? (
+          <p>Loading books...</p>
+        ) : results.length > 0 ? (
           results.map((book) => <BookCard key={book.id} book={book} />)
         ) : (
-          <p>Loading books...</p>
+          <p>No results found.</p>
         )}
       </div>
 

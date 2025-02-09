@@ -75,13 +75,14 @@ export default function Categories() {
   const handleCategoryChange = (category) => {
     setSelectedCategory(category.toLowerCase());
     setCurrentPage(1);
-    setSearchQuery("");
+    setFilteredBooks([]);
+    // setSearchQuery("");
   };
 
   return (
     <div className="categories-container">
       <nav className="categories">
-        <h2>Select a Category</h2>
+        <h2>Select a Category!</h2>
         <ul>
           {categories.map((category) => (
             <li key={category}>
@@ -100,17 +101,29 @@ export default function Categories() {
       </nav>
 
       <div className="category-container">
-        {selectedCategory && !loading && filteredBooks.length > 0 && (
+        {selectedCategory && (
           <>
-            <h3>Books in {selectedCategory} category</h3>
-            {filteredBooks.map((book) => (
-              <BookCard
-                book={book}
-                key={book.id}
-                isFavorite={favorites.includes(book.id)}
-                onFavoriteClick={addToFavorites}
-              />
-            ))}
+            {loading ? (
+              <h3>Loading books...</h3> // Display loading message
+            ) : (
+              <>
+                {filteredBooks.length > 0 ? (
+                  <>
+                    <h3>Books in {selectedCategory} category</h3>
+                    {filteredBooks.map((book) => (
+                      <BookCard
+                        book={book}
+                        key={book.id}
+                        isFavorite={favorites.includes(book.id)}
+                        onFavoriteClick={addToFavorites}
+                      />
+                    ))}
+                  </>
+                ) : (
+                  <h3>Loading books...</h3>
+                )}
+              </>
+            )}
           </>
         )}
       </div>

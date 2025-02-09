@@ -5,7 +5,7 @@ import "../App.css";
 export default function HomeView() {
   const { loading, error } = useContext(AppContext);
 
-  if (loading) return <p>Loading books...</p>;
+  if (loading) return <p>Loading ...</p>;
   if (error) return <p>{error}</p>;
 
   return (
