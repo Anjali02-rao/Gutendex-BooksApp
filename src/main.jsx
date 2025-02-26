@@ -28,6 +28,10 @@ const router = createBrowserRouter([
         path: "Gutendex-BooksApp/category",
         element: <CategoriesView />,
       },
+      {
+        path: "Gutendex-BooksApp/categories/:category",
+        element: <CategoriesView />,
+      },
       { path: "Gutendex-BooksApp/favorites", element: <FavoritesView /> },
     ],
   },

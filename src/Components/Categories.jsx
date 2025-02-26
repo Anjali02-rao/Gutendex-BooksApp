@@ -1,20 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../App";
+import React from "react";
 import { Link } from "react-router-dom";
-import BookCard from "./BookCard";
 import "../App.css";
 
-export default function Categories() {
-  const { setLoading, setError, favorites, addToFavorites } =
-    useContext(AppContext);
-
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [filteredBooks, setFilteredBooks] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoadingState] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-
+export default function Categories({ selectedCategory }) {
   const categories = [
     "Fiction",
     "Mystery",
@@ -31,54 +19,6 @@ export default function Categories() {
     "Philosophy",
   ];
 
-  useEffect(() => {
-    if (!selectedCategory) return;
-
-    const fetchBooksByCategory = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await fetch(
-          `https://gutendex.com/books/?topic=${selectedCategory}&page=${currentPage}&limit=10`
-        );
-        if (!response.ok) {
-          throw new Error("Error fetching books");
-        }
-
-        const data = await response.json();
-        console.log("Fetched data:", data);
-
-        setFilteredBooks(data.results || []);
-        setTotalPages(Math.ceil((data.count || 0) / 10));
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBooksByCategory();
-  }, [selectedCategory, currentPage]);
-
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category.toLowerCase());
-    setCurrentPage(1);
-    setFilteredBooks([]);
-    // setSearchQuery("");
-  };
-
   return (
     <div className="categories-container">
       <nav className="categories">
@@ -87,11 +27,7 @@ export default function Categories() {
           {categories.map((category) => (
             <li key={category}>
               <Link
-                to="#"
-                onClick={() => handleCategoryChange(category)}
-                className={
-                  selectedCategory === category.toLowerCase() ? "active" : ""
-                }
+                to={`/Gutendex-BooksApp/categories/${encodeURIComponent(category.toLowerCase())}`}
               >
                 {category}
               </Link>
@@ -103,52 +39,10 @@ export default function Categories() {
       <div className="category-container">
         {selectedCategory && (
           <>
-            {loading ? (
-              <h3>Loading books...</h3> // Display loading message
-            ) : (
-              <>
-                {filteredBooks.length > 0 ? (
-                  <>
-                    <h3>Books in {selectedCategory} category</h3>
-                    {filteredBooks.map((book) => (
-                      <BookCard
-                        book={book}
-                        key={book.id}
-                        isFavorite={favorites.includes(book.id)}
-                        onFavoriteClick={addToFavorites}
-                      />
-                    ))}
-                  </>
-                ) : (
-                  <h3>Loading books...</h3>
-                )}
-              </>
-            )}
+            <h2 className="text">Books in {selectedCategory} category</h2>
           </>
         )}
       </div>
-
-      {totalPages > 1 && (
-        <div className="categories-pagination">
-          <button
-            onClick={handlePrevious}
-            disabled={currentPage === 1}
-            className="cat-pg-btn-p"
-          >
-            Previous
-          </button>
-          <span>
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            onClick={handleNext}
-            disabled={currentPage === totalPages}
-            className="cat-pg-btn-n"
-          >
-            Next
-          </button>
-        </div>
-      )}
     </div>
   );
 }

@@ -1,20 +1,49 @@
-import React, { useContext, useState, useEffect } from "react";
-import { AppContext } from "../App";
+import React, { useState, useEffect } from "react";
 import BookCard from "../Components/BookCard";
 import "../App.css";
 
 export default function BookView() {
-  const { books, loading, error, favorites, addToFavorites } =
-    useContext(AppContext);
-
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [favorites, setFavorites] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const booksPerPage = 10;
+  const [moreBooks, setMoreBooks] = useState(true);
+  const [totalPages, setTotalPages] = useState(1);
+  const booksPerPage = 30;
 
-  const totalPages = Math.ceil(books.length / booksPerPage);
-  const paginatedBooks = books.slice(
-    (currentPage - 1) * booksPerPage,
-    currentPage * booksPerPage
-  );
+  useEffect(() => {
+    const fetchBooks = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `https://gutendex.com/books/?page=${currentPage}`
+        );
+        const data = await response.json();
+
+        if (data.results.length > 0) {
+          setBooks(data.results);
+          setTotalPages(Math.ceil(data.count / booksPerPage));
+        } else {
+          setMoreBooks(false);
+        }
+      } catch (err) {
+        setError("Failed to fetch books");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBooks();
+  }, [currentPage]);
+
+  const addToFavorites = (bookId) => {
+    setFavorites((prev) =>
+      prev.includes(bookId)
+        ? prev.filter((id) => id !== bookId)
+        : [...prev, bookId]
+    );
+  };
 
   if (loading) return <p>Loading books...</p>;
   if (error) return <p>{error}</p>;
@@ -23,7 +52,7 @@ export default function BookView() {
     <div className="books-view">
       <h2>All Books</h2>
       <div className="books-container">
-        {paginatedBooks.map((book) => (
+        {books.map((book) => (
           <BookCard
             book={book}
             key={book.id}
@@ -36,7 +65,7 @@ export default function BookView() {
       {totalPages > 1 && (
         <div className="pagination">
           <button
-            onClick={() => setCurrentPage(currentPage - 1)}
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
             className="previous-btn"
           >
@@ -46,8 +75,8 @@ export default function BookView() {
             Page {currentPage} of {totalPages}
           </span>
           <button
-            onClick={() => setCurrentPage(currentPage + 1)}
-            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            disabled={!moreBooks}
             className="next-btn"
           >
             Next
