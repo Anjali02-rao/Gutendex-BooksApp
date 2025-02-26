@@ -75,7 +75,10 @@ export default function CategoriesView() {
       <Categories onCategorySelect={handleCategoryChange} />
 
       {category && (
-        <h2 className="category-heading">Books in {category} Category</h2>
+        <h2 className="category-heading">
+          Books in {category.charAt(0).toUpperCase() + category.slice(1)}{" "}
+          Category
+        </h2>
       )}
 
       {loading && category && <h2 className="loading-text">Loading...</h2>}

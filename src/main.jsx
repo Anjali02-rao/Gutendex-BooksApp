@@ -1,3 +1,4 @@
+import React from "react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -13,33 +14,24 @@ import SearchResultsView from "./Views/SearchResultsView";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/Gutendex-BooksApp",
     element: <App />,
     errorElement: <ErrorView />,
     children: [
-      { path: "Gutendex-BooksApp/", element: <HomeView /> },
-      {
-        path: "Gutendex-BooksApp/search-results",
-        element: <SearchResultsView />,
-      },
-      { path: "Gutendex-BooksApp/bookview", element: <BooksView /> },
-      { path: "Gutendex-BooksApp/book/:bookId", element: <BookDetailsView /> },
-      {
-        path: "Gutendex-BooksApp/category",
-        element: <CategoriesView />,
-      },
-      {
-        path: "Gutendex-BooksApp/categories/:category",
-        element: <CategoriesView />,
-      },
-      { path: "Gutendex-BooksApp/favorites", element: <FavoritesView /> },
+      { path: "", element: <HomeView /> },
+      { path: "search-results", element: <SearchResultsView /> },
+      { path: "bookview", element: <BooksView /> },
+      { path: "book/:bookId", element: <BookDetailsView /> },
+      { path: "category", element: <CategoriesView /> },
+      { path: "categories/:category", element: <CategoriesView /> },
+      { path: "favorites", element: <FavoritesView /> },
     ],
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} basename="/Gutendex-BooksApp" />
+    <RouterProvider router={router} />
   </StrictMode>
 );
 

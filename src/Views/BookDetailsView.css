@@ -57,6 +57,33 @@
   font-weight: 500;
 }
 
+.favorite-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  transition: color 0.3s ease-in-out;
+}
+
+.favorite-btn:hover {
+  color: red;
+}
+
+.favorite-icon {
+  font-size: 24px;
+  cursor: pointer;
+  color: gray;
+  transition: color 0.3s ease-in-out;
+}
+
+.favorite-icon.selected {
+  color: red;
+}
+
 .books-container {
   display: flex;
   flex-wrap: wrap;

@@ -8,8 +8,8 @@ export default function BookCard({ book }) {
       <Link to={`/Gutendex-BooksApp/book/${book.id}`}>
         <div className="book-card__image-container">
           <img
-            src={book.formats["image/jpeg"] || "default-bookimg.jpg"}
-            alt={book.title}
+            src={book?.formats?.["image/jpeg"] || "default-bookimg.jpg"}
+            alt={book?.title || "No title available"}
             className="book-card__image"
           />
         </div>

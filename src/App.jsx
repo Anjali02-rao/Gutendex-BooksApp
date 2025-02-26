@@ -24,11 +24,10 @@ export default function App() {
   const addToFavorites = (book) => {
     setFavorites((prevFavorites) => {
       if (!prevFavorites.some((favBook) => favBook.id === book.id)) {
-        const updatedFavorites = [...prevFavorites, book];
+        const updatedFavorites = [...prevFavorites, { ...book }];
         return updatedFavorites;
-      } else {
-        return prevFavorites;
       }
+      return prevFavorites;
     });
   };
 

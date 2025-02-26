@@ -1,30 +1,24 @@
-import { useState, useContext, useEffect } from "react";
-import { AppContext } from "../App";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../App.css";
 
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    const clearSearchBar = () => {
+    if (location.pathname !== "/Gutendex-BooksApp/search-results") {
       setSearchQuery("");
-    };
+    }
+  }, [location.pathname]);
 
-    return () => clearSearchBar();
-  }, [navigate]);
-
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim() !== "") {
-      try {
-        navigate(
-          `/Gutendex-BooksApp/search-results?query=${encodeURIComponent(searchQuery)}`
-        );
-      } catch (error) {
-        console.error("Error navigating to search results:", error);
-      }
+      navigate(
+        `/Gutendex-BooksApp/search-results?query=${encodeURIComponent(searchQuery)}`
+      );
     }
   };
 

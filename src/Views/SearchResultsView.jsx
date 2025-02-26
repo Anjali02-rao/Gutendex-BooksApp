@@ -20,10 +20,6 @@ const SearchResultsView = () => {
     const fetchResults = async () => {
       setLoading(true);
       try {
-        console.log(
-          `Fetching books for: ${searchQuery} | Page: ${currentPage}`
-        );
-
         const response = await fetch(
           `https://gutendex.com/books/?search=${encodeURIComponent(searchQuery)}&page=${currentPage}`
         );
@@ -32,7 +28,6 @@ const SearchResultsView = () => {
         }
 
         const data = await response.json();
-
         setResults(data.results || []);
         setTotalPages(Math.ceil((data.count || 0) / 30));
       } catch (error) {
